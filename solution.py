@@ -47,13 +47,13 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         # Fill in start
         icmp_Header = recPacket[20:28]
         ICMP_TYPE, ICMP_CODE, ICMP_CHECKSUM, ICMP_PACKETID, ICMP_SEQUENCE = struct.unpack("bbHHh", icmp_Header)
-        bytes_count = 8 
+        bytes_in_double = struct.calcsize("d") 
         ICMP_TTL = (struct.unpack("d", recPacket[0:8])[0]) * 1000
-        ICMP_TIME_SENT = (struct.unpack("d", recPacket[28:28 + bytes_count])[0]) * 1000
+        ICMP_TIME_SENT = (struct.unpack("d", recPacket[28:28 + bytes_in_double])[0]) * 1000
         ICMP_RTT = (timeReceived - ICMP_TIME_SENT) * 1000
         length_of_packet = len(recPacket)
-        if ICMP_PACKETID == ID:
-            return ICMP_RTT, (length_of_packet, ICMP_TTL)
+        if ID == ICMP_PACKETID:
+            return ICMP_RTT, (ICMP_TTL, length_of_packet)
     
             
         #Fetch the ICMP header from the IP packet
@@ -117,7 +117,7 @@ def ping(host, timeout=1):
     
     for i in range(0,4): #Four pings will be sent (loop runs for i=0, 1, 2, 3)
         delay, statistics = doOnePing(dest, timeout) #what is stored into delay and statistics?
-        response = response.append({'bytes': statistics[0], 'rtt': delay, 'ttl': statistics[1]}, ignore_index = True) #store your bytes, rtt, and ttle here in your response pandas dataframe. An example is commented out below for vars
+        response = response.append({'bytes': statistics[1], 'rtt': delay, 'ttl': statistics[0]}, ignore_index = True) #store your bytes, rtt, and ttle here in your response pandas dataframe. An example is commented out below for vars
         print(delay) 
         time.sleep(1)  # wait one second
     
