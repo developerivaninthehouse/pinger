@@ -46,7 +46,7 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
 
         # Fill in start
         icmp_Header = recPacket[20:28]
-        ICMP_TYPE, ICMP_CODE, ICMP_CHECKSUM, ICMP_PACKETID, ICMP_SEQUENCE = struct.unpack("BBHHH", icmp_Header)
+        ICMP_TYPE, ICMP_CODE, ICMP_CHECKSUM, ICMP_PACKETID, ICMP_SEQUENCE = struct.unpack("bbHHh", icmp_Header)
         bytes_count = 8 
         ICMP_TTL = (struct.unpack("d", recPacket[0:8])[0]) * 1000
         ICMP_TIME_SENT = (struct.unpack("d", recPacket[28:28 + bytes_count])[0]) * 1000
