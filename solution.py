@@ -54,8 +54,7 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         length_of_packet = len(recPacket)
         if ICMP_PACKETID == ID:
             return ICMP_RTT, (length_of_packet, ICMP_TTL)
-            
-            
+    
             
         #Fetch the ICMP header from the IP packet
 
@@ -129,7 +128,7 @@ def ping(host, timeout=1):
         if response.at[index, 'bytes'] == 0: #access your response df to determine if you received a packet or not
             packet_lost = packet_lost + 1 
         else:
-            packet_recv = packet_lost + 1
+            packet_recv = packet_recv + 1
     #fill in end
 
     #You should have the values of delay for each ping here structured in a pandas dataframe; 
